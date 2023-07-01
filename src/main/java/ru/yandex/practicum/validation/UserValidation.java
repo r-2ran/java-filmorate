@@ -6,10 +6,12 @@ import java.time.LocalDate;
 
 public class UserValidation {
     public boolean isValid(User user) {
-        emptyName(user);
-        return emailCheck(user) &&
-                loginCheck(user) &&
-                birthdayCheck(user);
+        if (user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+        return emailCheck(user)
+                && loginCheck(user)
+                && birthdayCheck(user);
     }
 
     private boolean emailCheck(User user) {
@@ -24,10 +26,5 @@ public class UserValidation {
         return user.getBirthday().isBefore(LocalDate.now());
     }
 
-    private void emptyName(User user) {
-        if (user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
-    }
 }
 

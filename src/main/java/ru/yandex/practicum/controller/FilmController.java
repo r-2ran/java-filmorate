@@ -26,7 +26,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public HashMap<Integer, Film> addFilm(@RequestBody Film film) throws ValidationException {
+    public Film addFilm(@RequestBody Film film) throws ValidationException {
         if (!validation.isValid(film)) {
             log.warn("Ошибка валидации при добавлении фильма");
             throw new ValidationException("Ошибка валидации при добавлении фильма");
@@ -35,11 +35,11 @@ public class FilmController {
             films.put(film.getId(), film);
             log.debug("Успешное добавление фильма");
         }
-        return films;
+        return film;
     }
 
     @PutMapping
-    public HashMap<Integer, Film> updateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@RequestBody Film film) throws ValidationException {
         if (!validation.isValid(film)) {
             log.warn("Ошибка валидации при обновлении фильма");
             throw new ValidationException("Ошибка валидации при обновлении фильма");
@@ -52,6 +52,6 @@ public class FilmController {
                 throw new NullPointerException("Нет такого фильма");
             }
         }
-        return films;
+        return film;
     }
 }

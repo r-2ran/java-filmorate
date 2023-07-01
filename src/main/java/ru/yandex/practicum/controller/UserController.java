@@ -16,7 +16,6 @@ import java.util.List;
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    // List<User> users = new ArrayList<>();
     private final HashMap<Integer, User> users = new HashMap<>();
     private final UserValidation validation = new UserValidation();
     private Integer generatedId = 1;
@@ -27,22 +26,22 @@ public class UserController {
     }
 
     @PostMapping
-    HashMap<Integer, User> addUser(@RequestBody User user) throws ValidationException {
+    public User addUser(@RequestBody User user) throws ValidationException {
         if (!validation.isValid(user)) {
-            log.warn("Ошибка валидации при добавлении пользователя");
+            log.warn("Ошибка валидации при добавлении пользователя " + user);
             throw new ValidationException("Ошибка валидации при добавлении пользователя");
-        } else {
-            user.setId(generatedId++);
-            users.put(user.getId(), user);
-            log.debug("Успешное добавление пользователя");
         }
-        return users;
+        user.setId(generatedId++);
+        users.put(user.getId(), user);
+        log.debug("Успешное добавление пользователя");
+
+        return user;
     }
 
     @PutMapping
-    public HashMap<Integer, User> updateUser(@RequestBody User user) throws ValidationException {
+    public User updateUser(@RequestBody User user) throws ValidationException {
         if (!validation.isValid(user)) {
-            log.warn("Ошибка валидации при обновлении пользователя");
+            log.warn("Ошибка валидации при обновлении пользователя " + user);
             throw new ValidationException("Ошибка валидации при обновлении пользователя");
         } else {
             if (users.containsKey(user.getId())) {
@@ -53,6 +52,6 @@ public class UserController {
                 throw new ValidationException("Нет такого пользователя");
             }
         }
-        return users;
+        return user;
     }
 }
