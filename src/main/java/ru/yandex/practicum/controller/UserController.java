@@ -26,15 +26,25 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user) throws ValidationException {
-        if (!validation.isValid(user)) {
-            log.warn("Ошибка валидации при добавлении пользователя " + user);
-            throw new ValidationException("Ошибка валидации при добавлении пользователя");
+    public User addUser(@RequestBody User user) throws ValidationException, NullPointerException {
+        try {
+            if (!validation.isValid(user)) {
+                log.warn("Ошибка валидации при добавлении пользователя " + user);
+                throw new ValidationException("Ошибка валидации при добавлении пользователя");
+            }
+            user.setId(generatedId++);
+            users.put(user.getId(), user);
+            log.debug("Успешное добавление пользователя");
+        } catch (NullPointerException e) {
+            user.setName(user.getLogin());
+            if (!validation.isValid(user)) {
+                log.warn("Ошибка валидации при добавлении пользователя " + user);
+                throw new ValidationException("Ошибка валидации при добавлении пользователя");
+            }
+            user.setId(generatedId++);
+            users.put(user.getId(), user);
+            log.debug("Успешное добавление пользователя");
         }
-        user.setId(generatedId++);
-        users.put(user.getId(), user);
-        log.debug("Успешное добавление пользователя");
-
         return user;
     }
 

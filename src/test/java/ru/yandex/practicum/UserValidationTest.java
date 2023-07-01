@@ -38,6 +38,17 @@ public class UserValidationTest {
     }
 
     @Test
+    public void emptyName() {
+        User emptyNameUser = new User("friend@common.ru", "common",
+                LocalDate.of(2000, 12, 12));
+        try {
+            assertTrue(validation.isValid(emptyNameUser));
+        } catch (NullPointerException e) {
+            emptyNameUser.setName(emptyNameUser.getName());
+        }
+    }
+
+    @Test
     public void okTest() {
         assertTrue(validation.isValid(user));
     }

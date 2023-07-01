@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class UserValidation {
     public boolean isValid(User user) {
-        if (user.getName().isEmpty()) {
+        if (user.getName().isBlank() && loginCheck(user)) {
             user.setName(user.getLogin());
         }
         return emailCheck(user)
@@ -19,7 +19,7 @@ public class UserValidation {
     }
 
     private boolean loginCheck(User user) {
-        return !user.getLogin().isEmpty();
+        return !user.getLogin().isBlank();
     }
 
     private boolean birthdayCheck(User user) {
