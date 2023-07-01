@@ -3,8 +3,8 @@ package ru.yandex.practicum.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.Duration;
 import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 public class Film {
@@ -12,5 +12,5 @@ public class Film {
     private String name;
     private String description;
     private LocalDate releaseDate;
-    private Duration duration;
+    private Integer duration;
 }

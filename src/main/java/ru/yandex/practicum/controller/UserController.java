@@ -1,52 +1,56 @@
 package ru.yandex.practicum.controller;
 
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.validation.UserValidation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    List<User> users = new ArrayList<>();
-    UserValidation validation = new UserValidation();
+    // List<User> users = new ArrayList<>();
+    private final HashMap<Integer, User> users = new HashMap<>();
+    private final UserValidation validation = new UserValidation();
+    private Integer generatedId = 1;
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> allUsers() {
-        return users;
+        return new ArrayList<>(users.values());
     }
-    @PostMapping("/users")
-    public List<User> addUser(User user) throws ValidationException {
-        if(!validation.isValid(user)) {
+
+    @PostMapping
+    HashMap<Integer, User> addUser(@RequestBody User user) throws ValidationException {
+        if (!validation.isValid(user)) {
             log.warn("Ошибка валидации при добавлении пользователя");
             throw new ValidationException("Ошибка валидации при добавлении пользователя");
         } else {
-            users.add(user);
+            user.setId(generatedId++);
+            users.put(user.getId(), user);
             log.debug("Успешное добавление пользователя");
         }
         return users;
     }
-    @PutMapping("/users")
-    public List<User> updateFilm(User user) throws ValidationException {
-        if(!validation.isValid(user)) {
+
+    @PutMapping
+    public HashMap<Integer, User> updateUser(@RequestBody User user) throws ValidationException {
+        if (!validation.isValid(user)) {
             log.warn("Ошибка валидации при обновлении пользователя");
             throw new ValidationException("Ошибка валидации при обновлении пользователя");
         } else {
-            for (User userCurrent : users) {
-                if (userCurrent.getId() == user.getId()) {
-                    users.remove(userCurrent);
-                    users.add(user);
-                    log.debug("Успешное обновление пользователя");
-                }
+            if (users.containsKey(user.getId())) {
+                users.put(user.getId(), user);
+                log.debug("Успешное обновление пользователя");
+            } else {
+                log.warn("Невозможно обновить,  пользователя " + user + " не существует");
+                throw new ValidationException("Нет такого пользователя");
             }
         }
         return users;

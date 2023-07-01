@@ -12,26 +12,31 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserValidationTest {
     User user;
     UserValidation validation = new UserValidation();
+
     @BeforeEach
     public void createUser() {
         user = new User(1, "pochta@mail.ru", "login", "name",
                 LocalDate.of(1995, 1, 1));
     }
+
     @Test
     public void wrongEmail() {
         user.setEmail("pochta.sobaka.ru");
         assertFalse(validation.isValid(user));
     }
+
     @Test
     public void wrongLogin() {
         user.setLogin("");
         assertFalse(validation.isValid(user));
     }
+
     @Test
     public void wrongBirthday() {
-        user.setBirthday(LocalDate.of(2024,1,1));
+        user.setBirthday(LocalDate.of(2024, 1, 1));
         assertFalse(validation.isValid(user));
     }
+
     @Test
     public void okTest() {
         assertTrue(validation.isValid(user));
