@@ -1,6 +1,7 @@
 package ru.yandex.practicum.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.exception.NoSuchFilmException;
 import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.Film;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@RequestBody Film film) throws ValidationException, NoSuchFilmException {
         if (!validation.isValid(film)) {
             log.warn("Ошибка валидации при обновлении фильма " + film);
             throw new ValidationException("Ошибка валидации при обновлении фильма");
@@ -49,7 +50,7 @@ public class FilmController {
                 log.debug("Успешное обновлении фильма");
             } else {
                 log.warn("Невозможно обновлении, не существует фильма " + film);
-                throw new NullPointerException("Нет такого фильма");
+                throw new NoSuchFilmException("Нет такого фильма");
             }
         }
         return film;

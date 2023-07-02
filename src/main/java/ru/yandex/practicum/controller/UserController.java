@@ -1,6 +1,7 @@
 package ru.yandex.practicum.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.User;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) throws ValidationException {
+    public User updateUser(@RequestBody User user) throws ValidationException, NoSuchUserException {
         if (!validation.isValid(user)) {
             log.warn("Ошибка валидации при обновлении пользователя " + user);
             throw new ValidationException("Ошибка валидации при обновлении пользователя");
@@ -59,7 +60,7 @@ public class UserController {
                 log.debug("Успешное обновление пользователя");
             } else {
                 log.warn("Невозможно обновить,  пользователя " + user + " не существует");
-                throw new ValidationException("Нет такого пользователя");
+                throw new NoSuchUserException("Нет такого пользователя");
             }
         }
         return user;
