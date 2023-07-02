@@ -1,5 +1,6 @@
 package ru.yandex.practicum.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     int id;
     String email;
