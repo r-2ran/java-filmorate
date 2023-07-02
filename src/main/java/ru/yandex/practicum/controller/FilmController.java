@@ -41,7 +41,7 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
         if (!validation.isValid(film)) {
-            log.warn("Ошибка валидации при обновлении фильма");
+            log.warn("Ошибка валидации при обновлении фильма " + film);
             throw new ValidationException("Ошибка валидации при обновлении фильма");
         } else {
             if (films.containsKey(film.getId())) {
