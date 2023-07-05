@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
