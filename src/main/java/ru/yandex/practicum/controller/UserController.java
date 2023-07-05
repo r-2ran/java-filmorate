@@ -7,7 +7,6 @@ import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.service.user.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
