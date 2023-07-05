@@ -1,11 +1,12 @@
 package ru.yandex.practicum.validation;
 
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.model.Film;
 
 import java.time.LocalDate;
 import java.time.Month;
 
-
+@Component
 public class FilmValidation {
     public boolean isValid(Film film) {
         return nameCheck(film) &&

@@ -1,9 +1,11 @@
 package ru.yandex.practicum.validation;
 
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.model.User;
 
 import java.time.LocalDate;
 
+@Component
 public class UserValidation {
     public boolean isValid(User user) {
         if (user.getName().isBlank() && loginCheck(user)) {
