@@ -20,4 +20,12 @@ public class Film {
     LocalDate releaseDate;
     Integer duration;
     HashSet<Long> likes;
+
+    public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 }
