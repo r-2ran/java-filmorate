@@ -45,7 +45,7 @@ public class FilmService {
                 getLikesByFilmId(filmId).remove((long) userId);
                 filmStorage.updateFilm(getFilmById(filmId));
             } else {
-                throw new ValidationException("validation error");
+                throw new ValidationException("validation error " + filmId);
             }
         } else {
             throw new NoSuchUserException("no such user" + userId);
