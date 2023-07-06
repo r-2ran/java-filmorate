@@ -55,11 +55,6 @@ public class FilmController {
         return filmService.getPopularFilms(count);
     }
 
-//    @GetMapping("/popular")
-//    public List<Film> getPopularNoCount() {
-//        return filmService.getPopularFilms(10);
-//    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final ValidationException e) {
