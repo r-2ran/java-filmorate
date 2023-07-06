@@ -29,6 +29,7 @@ public class UserService {
         if (userStorage.getUsers().containsKey(userId) && userStorage.getUsers().containsKey(friendId)) {
             if (userValidation.isValid(getUser(userId)) && userValidation.isValid(getUser(friendId))) {
                 getUserFriendsById(userId).add((long) friendId);
+                getUserFriendsById(friendId).add((long) userId);
                 updateUser(getUser(userId));
             } else {
                 throw new ValidationException("invalid userId friendId");
@@ -41,7 +42,9 @@ public class UserService {
 
     public void deleteFriend(int userId, int friendId) {
         getUserFriendsById(userId).remove((long) friendId);
+        getUserFriendsById(friendId).remove((long) userId);
         updateUser(getUser(userId));
+        updateUser(getUser(friendId));
     }
 
     public List<User> getFriendlist(int userId) {

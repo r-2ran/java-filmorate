@@ -34,7 +34,7 @@ public class FilmService {
     }
 
     public List<Long> likeFilm(int filmId, int userId) {
-        getLikesByFilmId(filmId).add((long)userId);
+        getLikesByFilmId(filmId).add((long) userId);
         filmStorage.updateFilm(getFilmById(filmId));
         return new ArrayList<>(filmStorage.films.get(filmId).getLikes());
     }
@@ -53,16 +53,30 @@ public class FilmService {
     }
 
     public List<Film> getPopularFilms(int count) {
+        List<Film> films = new ArrayList<>(filmStorage.films.values());
         if (count == 1) {
-            List<Film> res = new ArrayList<>();
-            res.add(getFilm(2));
-            return res;
+            return mostPopularFilm();
+        } else {
+            return films.stream().sorted((f1, f2) -> {
+                        Integer f1Likes = f1.getLikes().size();
+                        Integer f2Likes = f2.getLikes().size();
+                        return f2Likes.compareTo(f1Likes);
+                    }
+            ).limit(count).collect(Collectors.toList());
         }
-        List<Film> result = new ArrayList<>(filmStorage.films.values());
-        return result.stream().sorted(Comparator.comparingInt(f -> f.getLikes().size())
-        ).limit(count).collect(Collectors.toList());
     }
 
+    private List<Film> mostPopularFilm() {
+        List<Film> films = new ArrayList<>(filmStorage.films.values());
+        Optional<Film> max = films.stream().min((f1, f2) -> {
+            Integer f1Likes = f1.getLikes().size();
+            Integer f2Likes = f2.getLikes().size();
+            return f2Likes.compareTo(f1Likes);
+        });
+        List<Film> mostPopFilm = new ArrayList<>();
+        mostPopFilm.add(max.get());
+        return mostPopFilm;
+    }
 
     public List<Film> getAllFilms() {
         return new ArrayList<>(filmStorage.films.values());

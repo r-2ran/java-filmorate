@@ -37,6 +37,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Ошибка валидации при обновлении фильма");
         } else {
             if (films.containsKey(film.getId())) {
+                films.remove(film.getId());
                 films.put(film.getId(), film);
                 log.debug("Успешное обновлении фильма");
             } else {
