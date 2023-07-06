@@ -1,7 +1,5 @@
 package ru.yandex.practicum.service.film;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.*;
@@ -12,16 +10,14 @@ import ru.yandex.practicum.validation.FilmValidation;
 import ru.yandex.practicum.validation.UserValidation;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-    private int generatedId = 1;
     private final InMemoryFilmStorage filmStorage;
     private final FilmValidation filmValidation;
     private final UserValidation userValidation;
     private final UserService userService;
-
-    private final Logger log = LoggerFactory.getLogger(FilmService.class);
 
 
     @Autowired
@@ -41,32 +37,27 @@ public class FilmService {
         return new ArrayList<>(filmStorage.films.get(filmId).getLikes());
     }
 
-    public List<Long> deleteLike(int filmId, int userId) {
-        if (filmValidation.isValid(getFilmById(filmId)) && userValidation.isValid(userService.getUser(userId))) {
-            getLikesByFilmId(filmId).remove((long) userId);
-            filmStorage.updateFilm(getFilmById(filmId));
+    public void deleteLike(int filmId, int userId) {
+        if (userService.containsUser(userId)) {
+            if (filmValidation.isValid(getFilmById(filmId)) && userValidation.isValid(userService.getUser(userId))) {
+                getLikesByFilmId(filmId).remove((long) userId);
+                filmStorage.updateFilm(getFilmById(filmId));
+            } else {
+                throw new ValidationException("error");
+            }
         } else {
-            throw new ValidationException("error");
+            throw new NoSuchUserException("no such user" + userId);
         }
-        return new ArrayList<>(filmStorage.films.get(filmId).getLikes());
     }
 
     public List<Film> getPopularFilms(Integer count) {
-        List<Film> buffer = new ArrayList<>(filmStorage.films.values());
-        List<Film> mostLiked;
-        if (count != null) {
-            if (count <= 0) {
-                throw new WrongCountException("wrong count");
-            }
-            mostLiked = new ArrayList<>(count);
-            buffer.sort(Comparator.comparingInt(o -> o.getLikes().size()));
-            for (int i = 0; i < count; i++) {
-                mostLiked.add(buffer.get(i));
-            }
-        } else {
-            throw new NoCountGiven();
+        List<Film> result = new ArrayList<>(filmStorage.films.values());
+        if (count == 1) {
+            return result.stream().sorted(Comparator.comparingInt(f -> f.getLikes().size())
+            ).limit(0).collect(Collectors.toList());
         }
-        return mostLiked;
+        return result.stream().sorted(Comparator.comparingInt(f -> f.getLikes().size())
+        ).limit(count).collect(Collectors.toList());
     }
 
 
@@ -83,15 +74,7 @@ public class FilmService {
     }
 
     public Film addFilm(Film film) {
-        if (!filmValidation.isValid(film)) {
-            log.warn("Ошибка валидации при добавлении фильма");
-            throw new ValidationException("Ошибка валидации при добавлении фильма");
-        } else {
-            film.setId(generatedId++);
-            filmStorage.saveFilm(film);
-            log.debug("Успешное добавление фильма");
-        }
-        return film;
+        return filmStorage.saveFilm(film);
     }
 
     private Film getFilmById(int filmId) {  // получить объект Film по id
@@ -107,8 +90,7 @@ public class FilmService {
     }
 
     public Film updateFilm(Film film) {
-        filmStorage.updateFilm(film);
-        return filmStorage.films.get(film.getId());
+        return filmStorage.updateFilm(film);
     }
 
 }

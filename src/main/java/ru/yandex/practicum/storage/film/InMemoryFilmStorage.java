@@ -15,15 +15,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     public HashMap<Integer, Film> films = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(InMemoryFilmStorage.class);
     private final FilmValidation filmValidation = new FilmValidation();
+    private int generatedId = 1;
 
     @Override
-    public void saveFilm(Film film) {
-        films.put(film.getId(), film);
+    public Film saveFilm(Film film) {
+        if (!filmValidation.isValid(film)) {
+            log.warn("Ошибка валидации при добавлении фильма");
+            throw new ValidationException("Ошибка валидации при добавлении фильма");
+        } else {
+            film.setId(generatedId++);
+            films.put(film.getId(), film);
+            log.debug("Успешное добавление фильма");
+        }
+        return film;
     }
 
     @Override
-    public void updateFilm(Film film) {
-
+    public Film updateFilm(Film film) {
         if (!filmValidation.isValid(film)) {
             log.warn("Ошибка валидации при обновлении фильма " + film);
             throw new ValidationException("Ошибка валидации при обновлении фильма");
@@ -36,15 +44,17 @@ public class InMemoryFilmStorage implements FilmStorage {
                 throw new NoSuchFilmException("Нет такого фильма");
             }
         }
+        return film;
     }
 
     @Override
-    public void deleteFilm(Film film) {
+    public Film deleteFilm(Film film) {
         if (films.containsKey(film.getId())) {
             films.remove(film.getId());
         } else {
             log.warn("Невозможно удаление так как не существует фильм");
             throw new NoSuchFilmException("нет такого фильма");
         }
+        return film;
     }
 }

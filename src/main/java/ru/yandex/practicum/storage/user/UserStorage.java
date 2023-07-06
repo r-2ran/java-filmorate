@@ -4,9 +4,9 @@ package ru.yandex.practicum.storage.user;
 import ru.yandex.practicum.model.User;
 
 public interface UserStorage {
-    void saveUser(User user);
+    User saveUser(User user);
 
-    void deleteUser(User user);
+    User deleteUser(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 }

@@ -1,7 +1,5 @@
 package ru.yandex.practicum.service.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.NoSuchUserException;
@@ -16,11 +14,8 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
-
     private final InMemoryUserStorage userStorage;
     private final UserValidation userValidation;
-    private Integer generatedId = 1;
 
 
     @Autowired
@@ -30,16 +25,23 @@ public class UserService {
 
     }
 
-    public List<User> addFriend(int userId, int friendId) {
-        getUserFriendsById(userId).add((long) getUserById(friendId).getId());
-        userStorage.saveUser(getUserById(userId));
-        return new ArrayList<>(userStorage.users.values());
+    public void addFriend(int userId, int friendId) {
+        if (userId > 0 && friendId > 0) {
+            if (userValidation.isValid(getUser(userId)) && userValidation.isValid(getUser(friendId))) {
+                getUserFriendsById(userId).add((long) friendId);
+                updateUser(getUser(userId));
+            } else {
+                throw new ValidationException("invalid userId friendId");
+            }
+        } else {
+            throw new NoSuchUserException("no such user" + friendId);
+        }
+
     }
 
-    public List<User> deleteFriend(int userId, int friendId) {
+    public void deleteFriend(int userId, int friendId) {
         getUserFriendsById(userId).remove((long) friendId);
-        userStorage.updateUser(getUserById(userId));
-        return makeFriendlist(getUserFriendsById(userId));
+        updateUser(getUser(userId));
     }
 
     public List<User> getFriendlist(int userId) {
@@ -48,62 +50,29 @@ public class UserService {
 
     public List<User> getCommonFriendlistWithOther(int userId, int otherUserId) {
         List<User> commonFriends = new ArrayList<>();
-        for (Long id : getUserFriendsById(userId)) {
-            if (getUserFriendsById(otherUserId).contains(id)) {
-                commonFriends.add(getUserById(id));
+        if (userId > 0 && otherUserId > 0) {
+            if (userValidation.isValid(getUser(userId)) && userValidation.isValid(getUser(otherUserId))) {
+                for (long id : getUserFriendsById(userId)) {
+                    if (getUserFriendsById(otherUserId).contains(id)) {
+                        commonFriends.add(getUser((int) id));
+                    }
+                }
+            } else {
+                throw new ValidationException("validation error");
             }
+        } else {
+            throw new NoSuchUserException("no such user");
         }
         return commonFriends;
     }
 
-    private User getUserById(long userId) {  // получить объект User по id
-        return userStorage.users.get((int) userId);
-    }
 
     private HashSet<Long> getUserFriendsById(int userId) {  // получить список друзей по id
-        return getUserById(userId).getFriends();
+        return getUser(userId).getFriends();
     }
 
     public List<User> getAllUsers() {
         return new ArrayList<>(userStorage.users.values());
-    }
-
-    public User addUser(User user) {
-        try {
-            if (!userValidation.isValid(user)) {
-                log.warn("Ошибка валидации при добавлении пользователя " + user);
-                throw new ValidationException("Ошибка валидации при добавлении пользователя");
-            }
-            user.setId(generatedId++);
-            userStorage.saveUser(user);
-            log.debug("Успешное добавление пользователя");
-        } catch (NullPointerException e) {
-            user.setName(user.getLogin());
-            if (!userValidation.isValid(user)) {
-                log.warn("Ошибка валидации при добавлении пользователя " + user);
-                throw new ValidationException("Ошибка валидации при добавлении пользователя");
-            }
-            user.setId(generatedId++);
-            userStorage.saveUser(user);
-            log.debug("Успешное добавление пользователя");
-        }
-        return user;
-    }
-
-    public User updateUser(User user) {
-        if (!userValidation.isValid(user)) {
-            log.warn("Ошибка валидации при обновлении пользователя " + user);
-            throw new ValidationException("Ошибка валидации при обновлении пользователя");
-        } else {
-            if (userStorage.users.containsKey(user.getId())) {
-                userStorage.updateUser(user);
-                log.debug("Успешное обновление пользователя");
-            } else {
-                log.warn("Невозможно обновить,  пользователя " + user + " не существует");
-                throw new NoSuchUserException("Нет такого пользователя");
-            }
-        }
-        return user;
     }
 
     public User getUser(int id) {
@@ -116,9 +85,21 @@ public class UserService {
 
     private List<User> makeFriendlist(HashSet<Long> idSet) {
         List<User> userFriendList = new ArrayList<>();
-        for (Long id: idSet) {
-            userFriendList.add(getUserById(id));
+        for (long id: idSet) {
+            userFriendList.add(getUser((int)id));
         }
         return userFriendList;
+    }
+
+    public boolean containsUser(int userId) {
+        return userStorage.users.containsKey(userId);
+    }
+
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
+    }
+
+    public User saveUser(User user) {
+        return userStorage.saveUser(user);
     }
 }

@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.exception.NoSuchFilmException;
+import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.Film;
 import ru.yandex.practicum.service.film.FilmService;
@@ -25,7 +26,7 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getFilm(@RequestBody @PathVariable int id) {
+    public Film getFilm(@PathVariable int id) {
         return filmService.getFilm(id);
     }
 
@@ -40,17 +41,17 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public List<Long> likeFilm(@RequestBody @PathVariable int id, @PathVariable int userId) {
+    public List<Long> likeFilm(@PathVariable("id") int id, @PathVariable("userId") int userId) {
         return filmService.likeFilm(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public List<Long> deleteLike(@RequestBody @PathVariable int id, @PathVariable int userId) {
-        return filmService.deleteLike(id, userId);
+    public void deleteLike(@PathVariable("id") int id, @PathVariable("userId") int userId) {
+        filmService.deleteLike(id, userId);
     }
 
     @GetMapping("/popular?count={count}")
-    public List<Film> getPopularFilms(@PathVariable int count) {
+    public List<Film> getPopularFilms(@RequestParam("count") int count) {
         return filmService.getPopularFilms(count);
     }
 
@@ -70,4 +71,11 @@ public class FilmController {
     public ErrorResponse handleNoSuchFilmException(final NoSuchFilmException e) {
         return new ErrorResponse("Ошибка данных", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNoSuchFilmException(final NoSuchUserException e) {
+        return new ErrorResponse("Ошибка данных", e.getMessage());
+    }
+
 }
