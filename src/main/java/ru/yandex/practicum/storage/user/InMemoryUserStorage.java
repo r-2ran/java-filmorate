@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    public HashMap<Integer, User> users = new HashMap<>();
+    private final HashMap<Integer, User> users = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(InMemoryUserStorage.class);
     private final UserValidation userValidation = new UserValidation();
     private int generatedId = 1;
@@ -46,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
         if (users.containsKey(user.getId())) {
             users.remove(user.getId());
         } else {
-            log.warn("Невозможно удаление так как нет такого пользователя");
+            log.warn("Невозможно удаление так как нет такого пользователя " + user);
             throw new NoSuchUserException("нет такого пользователя");
         }
         return user;
@@ -67,5 +67,9 @@ public class InMemoryUserStorage implements UserStorage {
             }
         }
         return users.get(user.getId());
+    }
+
+    public HashMap<Integer, User> getUsers() {
+        return users;
     }
 }

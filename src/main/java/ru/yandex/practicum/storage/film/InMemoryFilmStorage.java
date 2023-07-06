@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-    public HashMap<Integer, Film> films = new HashMap<>();
+    public final HashMap<Integer, Film> films = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(InMemoryFilmStorage.class);
     private final FilmValidation filmValidation = new FilmValidation();
     private int generatedId = 1;
@@ -20,7 +20,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film saveFilm(Film film) {
         if (!filmValidation.isValid(film)) {
-            log.warn("Ошибка валидации при добавлении фильма");
+            log.warn("Ошибка валидации при добавлении фильма" + film);
             throw new ValidationException("Ошибка валидации при добавлении фильма");
         } else {
             film.setId(generatedId++);
@@ -52,7 +52,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(film.getId())) {
             films.remove(film.getId());
         } else {
-            log.warn("Невозможно удаление так как не существует фильм");
+            log.warn("Невозможно удаление так как не существует фильм " + film);
             throw new NoSuchFilmException("нет такого фильма");
         }
         return film;

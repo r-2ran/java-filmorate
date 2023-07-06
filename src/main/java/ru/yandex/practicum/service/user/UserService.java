@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public void addFriend(int userId, int friendId) {
-        if (userId > 0 && friendId > 0) {
+        if (userStorage.getUsers().containsKey(userId) && userStorage.getUsers().containsKey(friendId)) {
             if (userValidation.isValid(getUser(userId)) && userValidation.isValid(getUser(friendId))) {
                 getUserFriendsById(userId).add((long) friendId);
                 updateUser(getUser(userId));
@@ -34,7 +34,7 @@ public class UserService {
                 throw new ValidationException("invalid userId friendId");
             }
         } else {
-            throw new NoSuchUserException("no such user" + friendId);
+            throw new NoSuchUserException("no such friendUser " + friendId);
         }
 
     }
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public List<User> getFriendlist(int userId) {
-        return makeFriendlist(userStorage.users.get(userId).getFriends());
+        return makeFriendlist(getUser(userId).getFriends());
     }
 
     public List<User> getCommonFriendlistWithOther(int userId, int otherUserId) {
@@ -72,27 +72,27 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(userStorage.users.values());
+        return new ArrayList<>(userStorage.getUsers().values());
     }
 
     public User getUser(int id) {
-        if (userStorage.users.containsKey(id)) {
-            return userStorage.users.get(id);
+        if (userStorage.getUsers().containsKey(id)) {
+            return userStorage.getUsers().get(id);
         } else {
             throw new NoSuchUserException("нет такого пользователя");
         }
     }
 
-    private List<User> makeFriendlist(HashSet<Long> idSet) {
+    private List<User> makeFriendlist(HashSet<Long> friends) {
         List<User> userFriendList = new ArrayList<>();
-        for (long id: idSet) {
-            userFriendList.add(getUser((int)id));
+        for (long id: friends) {
+            userFriendList.add(getUser((int) id));
         }
         return userFriendList;
     }
 
     public boolean containsUser(int userId) {
-        return userStorage.users.containsKey(userId);
+        return userStorage.getUsers().containsKey(userId);
     }
 
     public User updateUser(User user) {

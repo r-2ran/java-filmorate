@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.user;
 
 import ru.yandex.practicum.model.User;
 import org.junit.jupiter.api.BeforeEach;

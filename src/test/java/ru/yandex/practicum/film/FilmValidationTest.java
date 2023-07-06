@@ -1,4 +1,4 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.film;
 
 import ru.yandex.practicum.model.Film;
 import org.junit.jupiter.api.BeforeEach;

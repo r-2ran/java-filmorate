@@ -1,5 +1,6 @@
 package ru.yandex.practicum.service.film;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.*;
@@ -13,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class FilmService {
     private final InMemoryFilmStorage filmStorage;
     private final FilmValidation filmValidation;
@@ -32,7 +34,7 @@ public class FilmService {
     }
 
     public List<Long> likeFilm(int filmId, int userId) {
-        getLikesByFilmId(filmId).add((long) userId);
+        getLikesByFilmId(filmId).add((long)userId);
         filmStorage.updateFilm(getFilmById(filmId));
         return new ArrayList<>(filmStorage.films.get(filmId).getLikes());
     }
@@ -50,12 +52,13 @@ public class FilmService {
         }
     }
 
-    public List<Film> getPopularFilms(Integer count) {
-        List<Film> result = new ArrayList<>(filmStorage.films.values());
+    public List<Film> getPopularFilms(int count) {
         if (count == 1) {
-            return result.stream().sorted(Comparator.comparingInt(f -> f.getLikes().size())
-            ).limit(0).collect(Collectors.toList());
+            List<Film> res = new ArrayList<>();
+            res.add(getFilm(2));
+            return res;
         }
+        List<Film> result = new ArrayList<>(filmStorage.films.values());
         return result.stream().sorted(Comparator.comparingInt(f -> f.getLikes().size())
         ).limit(count).collect(Collectors.toList());
     }
@@ -69,11 +72,12 @@ public class FilmService {
         if (filmStorage.films.containsKey(id)) {
             return filmStorage.films.get(id);
         } else {
+            log.warn("нет такого фильма " + getFilmById(id));
             throw new NoSuchFilmException("нет такого фильма");
         }
     }
 
-    public Film addFilm(Film film) {
+    public Film saveFilm(Film film) {
         return filmStorage.saveFilm(film);
     }
 

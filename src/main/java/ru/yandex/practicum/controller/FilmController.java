@@ -32,7 +32,7 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@RequestBody Film film) {
-        return filmService.addFilm(film);
+        return filmService.saveFilm(film);
     }
 
     @PutMapping
