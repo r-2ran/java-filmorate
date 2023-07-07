@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +19,7 @@ public class User {
     String login;
     String name;
     LocalDate birthday;
+    final HashSet<Long> friends = new HashSet<>();
 
     public User(String email, String login, LocalDate birthday) {
         this.email = email;
