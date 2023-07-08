@@ -6,6 +6,7 @@ import ru.yandex.practicum.exception.NoSuchFilmException;
 import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.film.Film;
+import ru.yandex.practicum.model.film.Genre;
 import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.service.film.FilmService;
 
@@ -63,6 +64,16 @@ public class FilmController {
     @GetMapping("/mpa/{id}")
     public Mpa getMpaById(@PathVariable int id) {
         return filmService.getMpa(id);
+    }
+
+    @GetMapping("/genres")
+    public List<Genre> getAllGenres() {
+        return filmService.getAllGenre();
+    }
+
+    @GetMapping("/genres/{id}")
+    public Genre getGenreById(@PathVariable int id) {
+        return filmService.getGenreById(id);
     }
 
     @ExceptionHandler

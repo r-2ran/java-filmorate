@@ -44,14 +44,13 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User deleteUser(User user) {
+    public void deleteUser(User user) {
         if (users.containsKey(user.getId())) {
             users.remove(user.getId());
         } else {
             log.warn("Невозможно удаление так как нет такого пользователя " + user);
             throw new NoSuchUserException("нет такого пользователя");
         }
-        return user;
     }
 
     @Override

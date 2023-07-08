@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.*;
 import ru.yandex.practicum.model.film.Film;
+import ru.yandex.practicum.model.film.Genre;
 import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.service.user.UserService;
-import ru.yandex.practicum.storage.film.FilmStorage;
+import ru.yandex.practicum.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.validation.FilmValidation;
 import ru.yandex.practicum.validation.UserValidation;
 
@@ -18,15 +19,15 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class FilmService {
-    private final FilmStorage filmStorage;
+    private final InMemoryFilmStorage filmStorage;
     private final FilmValidation filmValidation;
     private final UserValidation userValidation;
     private final UserService userService;
 
 
     @Autowired
-    public FilmService(@Qualifier("filmDbStorage")
-                           FilmStorage filmStorage,
+    public FilmService(@Qualifier("inMemoryFilmStorage")
+                       InMemoryFilmStorage filmStorage,
                        FilmValidation filmValidation,
                        UserValidation userValidation,
                        UserService userService) {
@@ -118,11 +119,7 @@ public class FilmService {
     }
 
     public List<Mpa> getAllMpa() {
-        List<Mpa> mpas = new ArrayList<>();
-        for (Film film : getAllFilms()) {
-            mpas.add(film.getMpa());
-        }
-        return mpas;
+        return filmStorage.getAllMpa();
     }
 
     public Mpa getMpa(int id) {
@@ -131,6 +128,21 @@ public class FilmService {
                 return mpa;
             } else {
                 throw new NoSuchFilmException("no such mpa");
+            }
+        }
+        return null;
+    }
+
+    public List<Genre> getAllGenre() {
+        return filmStorage.getAllGenres();
+    }
+
+    public Genre getGenreById(int id) {
+        for (Genre genre : getAllGenre()) {
+            if (genre.getId() == id) {
+                return genre;
+            } else {
+                throw new NoSuchFilmException("no such genre");
             }
         }
         return null;

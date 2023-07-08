@@ -17,7 +17,7 @@ public class UserValidation {
     }
 
     private boolean emailCheck(User user) {
-        return !user.getEmail().isEmpty() && user.getEmail().contains(String.valueOf("@"));
+        return !user.getEmail().isEmpty() && user.getEmail().contains("@");
     }
 
     private boolean loginCheck(User user) {

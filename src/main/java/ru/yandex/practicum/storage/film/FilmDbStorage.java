@@ -28,7 +28,7 @@ public class FilmDbStorage implements FilmStorage {
                 film.getLikes().size(),
                 film.getMpa().getId());
         for (int i = 0; i < genresCount; i++) {
-            jdbcTemplate.update("insert into films(genres_id) " + "values (?)", film.getGenres().get(i));
+            jdbcTemplate.update("insert into films(genres_id) " + "values (?)", film.getGenres());
         }
         return film;
     }
@@ -36,13 +36,13 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film updateFilm(Film film) {
         int genresCount = film.getGenres().size();
-        String sqlQuery = "update  films set " + "film_id = ?, name = ?, " +
+        String sqlQuery = "update films set " + "film_id = ?, name = ?, " +
                 "description = ?, release_date = ?, likes_id = ?, mpa_id = ?";
         jdbcTemplate.update(sqlQuery, film.getId(), film.getName(), film.getDescription(), film.getReleaseDate(),
                 film.getLikes().size(),
                 film.getMpa().getId());
         for (int i = 0; i < genresCount; i++) {
-            jdbcTemplate.update("insert into films(genres_id) " + "values (?)", film.getGenres().get(i));
+            jdbcTemplate.update("update films set genres_id = ?", film.getGenres());
         }
         return film;
     }
@@ -55,8 +55,10 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public HashMap<Integer, Film> getAllFilmsMap() {
-        //  return jdbcTemplate.query("select * from films", filmRowMapper());
-        return null;
+        String query = "select film_id, name, description, release_date, likes_id, mpa_id from films as f " +
+                "\n join mpa as m on m.mpa_id = f.mpa_id";
+        jdbcTemplate.query(query, filmRowMapper());
+        return new HashMap<>();
     }
 
     private RowMapper<Film> filmRowMapper() {

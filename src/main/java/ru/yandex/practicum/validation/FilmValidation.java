@@ -6,17 +6,22 @@ import ru.yandex.practicum.model.film.Genre;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class FilmValidation {
     public boolean isValid(Film film) {
-      //  setMpaName(film);
-      //  setGenres(film);
+        //setMpaName(film);
+        // setGenresName(film);
         return nameCheck(film) &&
                 descriptionCheck(film) &&
                 releaseDateCheck(film) &&
                 descriptionCheck(film) &&
                 durationCheck(film);
+              //  && genreDuplicateCheck(film);
     }
 
     private boolean nameCheck(Film film) {
@@ -39,53 +44,23 @@ public class FilmValidation {
 
     private boolean genreDuplicateCheck(Film film) {
         boolean result = true;
-        for (int i = 0; i < film.getGenres().size(); i++) {
-            if (film.getGenres().contains(film.getGenres().get(i))) {
-                result = false;
-                break;
-            }
+        List<Genre> duplicates = film.getGenres().stream()
+                //группируем в map (пользователь -> количество вхождений)
+                .collect(Collectors.groupingBy(Function.identity()))
+                //проходим по группам
+                .entrySet()
+                .stream()
+                //отбираем пользователей, встречающихся более одного раза
+                .filter(e -> e.getValue().size() > 1)
+                //вытаскиваем ключи
+                .map(Map.Entry::getKey)
+                //собираем в список
+                .collect(Collectors.toList());
+        if (duplicates.size() > 0) {
+            result = false;
         }
         return result;
     }
 
-    private void setMpaName(Film film) {
-        int mpaId = film.getMpa().getId();
-        switch (mpaId) {
-            case 1:
-                film.getMpa().setName("G");
-                break;
-            case 2:
-                film.getMpa().setName("PG");
-                break;
-            case 3:
-                film.getMpa().setName("PG-13");
-                break;
-            case 4:
-                film.getMpa().setName("R");
-                break;
-            case 5:
-                film.getMpa().setName("NC-17");
-                break;
-        }
-    }
 
-    private void setGenres(Film film) {
-        int genres = film.getGenres().size();
-        for (Genre genre : film.getGenres()) {
-            switch (genre.getId()) {
-                case 1 : genre.setName("Комедия");
-                break;
-                case 2 : genre.setName("Драма");
-                break;
-                case 3 : genre.setName("Мультфильм");
-                break;
-                case 4 : genre.setName("Триллер");
-                break;
-                case 5 : genre.setName("Документальный");
-                break;
-                case 6 : genre.setName("Боевик");
-                break;
-            }
-        }
-    }
 }
