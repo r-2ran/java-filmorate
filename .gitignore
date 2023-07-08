@@ -16,8 +16,8 @@ target/
 *.mvn
 *.DS_Store
 
-/checkstyle.xml
-/api-tests.yml
+checkstyle.xml
+*.github/workflows/api-tests.yml
 
 ### STS ###
 .apt_generated

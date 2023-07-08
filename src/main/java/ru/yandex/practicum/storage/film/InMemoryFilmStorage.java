@@ -67,9 +67,4 @@ public class InMemoryFilmStorage implements FilmStorage {
     public HashMap<Integer, Film> getAllFilmsMap() {
         return films;
     }
-
-    private List<Film> toListFilms() {
-        filmList.addAll(films.values());
-        return filmList;
-    }
 }
