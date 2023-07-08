@@ -1,8 +1,8 @@
 package ru.yandex.practicum.film;
 
-import ru.yandex.practicum.model.film.Film;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.model.film.Film;
 import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.validation.FilmValidation;
 

@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.exception.*;
+import ru.yandex.practicum.exception.NoSuchFilmException;
+import ru.yandex.practicum.exception.NoSuchUserException;
+import ru.yandex.practicum.exception.ValidationException;
 import ru.yandex.practicum.model.film.Film;
 import ru.yandex.practicum.model.film.Genre;
 import ru.yandex.practicum.model.film.Mpa;
@@ -13,7 +15,10 @@ import ru.yandex.practicum.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.validation.FilmValidation;
 import ru.yandex.practicum.validation.UserValidation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
