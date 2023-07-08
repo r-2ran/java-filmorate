@@ -3,11 +3,13 @@ package ru.yandex.practicum.film;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.film.Film;
+import ru.yandex.practicum.model.film.Genre;
 import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.validation.FilmValidation;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,7 +23,7 @@ public class FilmValidationTest {
         film = new Film(1, "name", "description",
                 LocalDate.of(2010, 1, 1), 120);
         film.setMpa(new Mpa(1, "P"));
-        film.setGenres(new ArrayList<>());
+        film.setGenres(new HashSet<>(List.of(new Genre(1, "Комедия"))));
     }
 
     @Test

@@ -86,6 +86,10 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films;
     }
 
+    public Film getFilmById(int id) {
+        return getAllFilmsMap().get(id);
+    }
+
     public List<Genre> getAllGenres() {
         return genres;
     }
