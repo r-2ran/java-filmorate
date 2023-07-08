@@ -8,8 +8,8 @@
 *.tar.gz
 *.rar
 hs_err_pid*
-out/
-target/
+*/out/
+*/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
