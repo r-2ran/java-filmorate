@@ -19,6 +19,7 @@ mvnw
 filmorate.iml
 *.xml
 *.properties
+*.sql
 
 ### STS ###
 .apt_generated
