@@ -13,6 +13,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.mvn
+mvnw.cmd
+mvnw
+filmorate.iml
 
 ### STS ###
 .apt_generated
