@@ -13,20 +13,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-*.mvn
-*.DS_Store
-
-*/checkstyle.xml
-*.github/workflows/api-tests.yml
-*.idea
-*.iws
-*.iml
-*.ipr
-*.db
-*out/
-*target/
-*.github/*
-*checkstyle.xml
 
 ### STS ###
 .apt_generated
@@ -38,7 +24,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-*.idea
+.idea
 *.iws
 *.iml
 *.ipr
