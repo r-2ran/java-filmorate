@@ -20,6 +20,7 @@ mvn
 */mvn
 **.DS_Store
 **/.DS_Store
+*/target/**
 
 ### STS ###
 .apt_generated
