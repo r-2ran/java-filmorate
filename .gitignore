@@ -19,6 +19,19 @@ target/
 */checkstyle.xml
 *.github/workflows/api-tests.yml
 
+*.class
+*.jar
+*.mvn
+*.DS_Store
+*.idea
+*.iws
+*.iml
+*.ipr
+*.db
+*.log
+out/
+target/
+
 ### STS ###
 .apt_generated
 .classpath
