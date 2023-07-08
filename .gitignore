@@ -17,6 +17,8 @@ target/
 mvnw.cmd
 mvnw
 filmorate.iml
+*.xml
+*.properties
 
 ### STS ###
 .apt_generated
