@@ -1,7 +1,6 @@
 package ru.yandex.practicum;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,6 +9,8 @@ import ru.yandex.practicum.model.film.Film;
 import ru.yandex.practicum.model.user.User;
 import ru.yandex.practicum.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.storage.user.InMemoryUserStorage;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
@@ -22,14 +23,16 @@ class FilmorateAppTest {
     public void testFindUserById() {
         User user = new User();
         user.setId(1);
-        Assertions.assertEquals(user.getId(), userStorage.getUser(1).getId());
+        userStorage.saveUser(user);
+        assertEquals(user.getId(), userStorage.getUser(1).getId());
     }
 
     @Test
     public void testGetFilmById() {
         Film film = new Film();
         film.setId(1);
-        Assertions.assertEquals(film.getId(), filmStorage.getFilmById(1).getId());
+        filmStorage.saveFilm(film);
+        assertEquals(film.getId(), filmStorage.getFilmById(1).getId());
     }
 
     @Test
@@ -40,7 +43,7 @@ class FilmorateAppTest {
         user2.setId(2);
         userStorage.saveUser(user1);
         userStorage.saveUser(user2);
-        Assertions.assertEquals(2, userStorage.getAllUsers().size());
+        assertEquals(2, userStorage.getAllUsers().size());
     }
 
     @Test
@@ -51,12 +54,7 @@ class FilmorateAppTest {
         film2.setId(2);
         filmStorage.saveFilm(film1);
         filmStorage.saveFilm(film2);
-        Assertions.assertEquals(2, filmStorage.getAllFilmsMap().size());
-    }
-
-    @Test
-    public void addUser() {
-        
+        assertEquals(2, filmStorage.getAllFilmsMap().size());
     }
 
     @Test
