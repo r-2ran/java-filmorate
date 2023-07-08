@@ -13,10 +13,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-.mvn
+*.mvn
 mvnw
 mvnw.cmd
 
+
+
+*.DS_Store
 ### STS ###
 .apt_generated
 .classpath
@@ -27,7 +30,7 @@ mvnw.cmd
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+*.idea
 *.iws
 *.iml
 *.ipr
