@@ -52,14 +52,13 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film deleteFilm(Film film) {
+    public void deleteFilm(Film film) {
         if (films.containsKey(film.getId())) {
             films.remove(film.getId());
         } else {
             log.warn("Невозможно удаление так как не существует фильм " + film);
             throw new NoSuchFilmException("нет такого фильма");
         }
-        return film;
     }
 
 

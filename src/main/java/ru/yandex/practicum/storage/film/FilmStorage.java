@@ -9,7 +9,7 @@ public interface FilmStorage {
 
     Film updateFilm(Film film);
 
-    Film deleteFilm(Film film);
+    void deleteFilm(Film film);
 
     HashMap<Integer, Film> getAllFilmsMap();
 }

@@ -16,7 +16,7 @@ target/
 *.mvn
 *.DS_Store
 
-checkstyle.xml
+*/checkstyle.xml
 *.github/workflows/api-tests.yml
 
 ### STS ###

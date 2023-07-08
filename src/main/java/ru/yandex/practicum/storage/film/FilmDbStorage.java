@@ -3,7 +3,6 @@ package ru.yandex.practicum.storage.film;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.model.film.Film;
 import ru.yandex.practicum.model.film.Genre;
@@ -22,25 +21,41 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film saveFilm(Film film) {
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("films")
-                .usingGeneratedKeyColumns("id");
-
-        return null;
+        int genresCount = film.getGenres().size();
+        String sqlQuery = "insert into films(film_id, name, description, release_date, likes_id, " +
+                " mpa_id)" + " values (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sqlQuery, film.getId(), film.getName(), film.getDescription(), film.getReleaseDate(),
+                film.getLikes().size(),
+                film.getMpa().getId());
+        for (int i = 0; i < genresCount; i++) {
+            jdbcTemplate.update("insert into films(genres_id) " + "values (?)", film.getGenres().get(i));
+        }
+        return film;
     }
 
     @Override
     public Film updateFilm(Film film) {
-        return null;
+        int genresCount = film.getGenres().size();
+        String sqlQuery = "update  films set " + "film_id = ?, name = ?, " +
+                "description = ?, release_date = ?, likes_id = ?, mpa_id = ?";
+        jdbcTemplate.update(sqlQuery, film.getId(), film.getName(), film.getDescription(), film.getReleaseDate(),
+                film.getLikes().size(),
+                film.getMpa().getId());
+        for (int i = 0; i < genresCount; i++) {
+            jdbcTemplate.update("insert into films(genres_id) " + "values (?)", film.getGenres().get(i));
+        }
+        return film;
     }
 
     @Override
-    public Film deleteFilm(Film film) {
-        return null;
+    public void deleteFilm(Film film) {
+        String sqlQuery = "delete from films where id = ?";
+        jdbcTemplate.update(sqlQuery, film.getId());
     }
 
     @Override
     public HashMap<Integer, Film> getAllFilmsMap() {
-      //  return jdbcTemplate.query("select * from films", filmRowMapper());
+        //  return jdbcTemplate.query("select * from films", filmRowMapper());
         return null;
     }
 
@@ -64,6 +79,6 @@ public class FilmDbStorage implements FilmStorage {
         return ((rs, rowNum) -> new Mpa(
                 rs.getInt("mpa_id"),
                 rs.getString("genre_name")
-                ));
+        ));
     }
 }

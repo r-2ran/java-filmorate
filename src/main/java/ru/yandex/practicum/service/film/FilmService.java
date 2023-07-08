@@ -25,7 +25,7 @@ public class FilmService {
 
 
     @Autowired
-    public FilmService(@Qualifier("inMemoryFilmStorage")
+    public FilmService(@Qualifier("filmDbStorage")
                            FilmStorage filmStorage,
                        FilmValidation filmValidation,
                        UserValidation userValidation,
