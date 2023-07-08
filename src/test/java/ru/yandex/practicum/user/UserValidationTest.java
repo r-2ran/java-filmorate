@@ -1,6 +1,6 @@
 package ru.yandex.practicum.user;
 
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.validation.UserValidation;

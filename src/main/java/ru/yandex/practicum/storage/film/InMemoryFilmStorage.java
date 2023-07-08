@@ -5,14 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.exception.NoSuchFilmException;
 import ru.yandex.practicum.exception.ValidationException;
-import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.model.film.Film;
 import ru.yandex.practicum.validation.FilmValidation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-    public final HashMap<Integer, Film> films = new HashMap<>();
+    private final HashMap<Integer, Film> films = new HashMap<>();
+    private final List<Film> filmList = new ArrayList<>();
     private final Logger log = LoggerFactory.getLogger(InMemoryFilmStorage.class);
     private final FilmValidation filmValidation = new FilmValidation();
     private int generatedId = 1;
@@ -57,5 +60,16 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new NoSuchFilmException("нет такого фильма");
         }
         return film;
+    }
+
+
+    @Override
+    public HashMap<Integer, Film> getAllFilmsMap() {
+        return films;
+    }
+
+    private List<Film> toListFilms() {
+        filmList.addAll(films.values());
+        return filmList;
     }
 }

@@ -1,7 +1,7 @@
 package ru.yandex.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 
 import java.time.LocalDate;
 

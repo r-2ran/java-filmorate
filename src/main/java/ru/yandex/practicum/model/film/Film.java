@@ -1,4 +1,4 @@
-package ru.yandex.practicum.model;
+package ru.yandex.practicum.model.film;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +21,14 @@ public class Film {
     LocalDate releaseDate;
     Integer duration;
     final HashSet<Long> likes = new HashSet<>();
+    Mpa mpa;
+    List<Genre> genres;
+
+    public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 }

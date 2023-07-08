@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 import ru.yandex.practicum.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.validation.UserValidation;
 
@@ -26,10 +26,9 @@ public class UserService {
     }
 
     public void addFriend(int userId, int friendId) {
-        if (userStorage.getUsers().containsKey(userId) && userStorage.getUsers().containsKey(friendId)) {
+        if (userStorage.getUsersMap().containsKey(userId) && userStorage.getUsersMap().containsKey(friendId)) {
             if (userValidation.isValid(getUser(userId)) && userValidation.isValid(getUser(friendId))) {
                 getUserFriendsById(userId).add((long) friendId);
-                getUserFriendsById(friendId).add((long) userId);
                 updateUser(getUser(userId));
             } else {
                 throw new ValidationException("invalid userId friendId");
@@ -75,12 +74,12 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(userStorage.getUsers().values());
+        return userStorage.getAllUsers();
     }
 
     public User getUser(int id) {
-        if (userStorage.getUsers().containsKey(id)) {
-            return userStorage.getUsers().get(id);
+        if (userStorage.getUsersMap().containsKey(id)) {
+            return userStorage.getUsersMap().get(id);
         } else {
             throw new NoSuchUserException("нет такого пользователя");
         }
@@ -95,7 +94,7 @@ public class UserService {
     }
 
     public boolean containsUser(int userId) {
-        return userStorage.getUsers().containsKey(userId);
+        return userStorage.getUsersMap().containsKey(userId);
     }
 
     public User updateUser(User user) {

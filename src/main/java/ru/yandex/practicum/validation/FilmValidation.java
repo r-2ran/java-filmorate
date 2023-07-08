@@ -1,7 +1,7 @@
 package ru.yandex.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.model.film.Film;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -9,6 +9,7 @@ import java.time.Month;
 @Component
 public class FilmValidation {
     public boolean isValid(Film film) {
+        setMpaName(film);
         return nameCheck(film) &&
                 descriptionCheck(film) &&
                 releaseDateCheck(film) &&
@@ -32,5 +33,37 @@ public class FilmValidation {
 
     private boolean durationCheck(Film film) {
         return film.getDuration() > 0;
+    }
+
+    private boolean genreDuplicateCheck(Film film) {
+        boolean result = true;
+        for (int i = 0; i < film.getGenres().size(); i++) {
+            if (film.getGenres().contains(film.getGenres().get(i))) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private void setMpaName(Film film) {
+        int mpaId = film.getMpa().getId();
+        switch (mpaId) {
+            case 1:
+                film.getMpa().setName("G");
+                break;
+            case 2:
+                film.getMpa().setName("PG");
+                break;
+            case 3:
+                film.getMpa().setName("PG-13");
+                break;
+            case 4:
+                film.getMpa().setName("R");
+                break;
+            case 5:
+                film.getMpa().setName("NC-17");
+                break;
+        }
     }
 }
