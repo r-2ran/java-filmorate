@@ -14,6 +14,19 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+.class
+.jar
+mvn
+.DS_Store
+.idea
+.iws
+.iml
+.ipr
+.db
+.log
+.out/
+.target/
+
 ### STS ###
 .apt_generated
 .classpath
