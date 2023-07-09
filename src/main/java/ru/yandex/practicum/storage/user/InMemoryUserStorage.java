@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 import ru.yandex.practicum.validation.UserValidation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
@@ -42,14 +44,13 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User deleteUser(User user) {
+    public void deleteUser(User user) {
         if (users.containsKey(user.getId())) {
             users.remove(user.getId());
         } else {
             log.warn("Невозможно удаление так как нет такого пользователя " + user);
             throw new NoSuchUserException("нет такого пользователя");
         }
-        return user;
     }
 
     @Override
@@ -69,7 +70,16 @@ public class InMemoryUserStorage implements UserStorage {
         return users.get(user.getId());
     }
 
-    public HashMap<Integer, User> getUsers() {
+    public HashMap<Integer, User> getUsersMap() {
         return users;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
+    }
+
+    public User getUser(int id) {
+        return getUsersMap().get(id);
     }
 }

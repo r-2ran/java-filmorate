@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 import ru.yandex.practicum.service.user.UserService;
 
 import java.util.List;
@@ -17,6 +17,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @GetMapping
     public List<User> getAllUsers() {

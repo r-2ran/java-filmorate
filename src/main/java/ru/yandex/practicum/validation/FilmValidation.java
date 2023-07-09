@@ -1,7 +1,7 @@
 package ru.yandex.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.model.film.Film;
 
 import java.time.LocalDate;
 import java.time.Month;

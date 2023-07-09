@@ -5,13 +5,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.exception.NoSuchFilmException;
 import ru.yandex.practicum.exception.NoSuchUserException;
 import ru.yandex.practicum.exception.ValidationException;
-import ru.yandex.practicum.model.Film;
+import ru.yandex.practicum.model.film.Film;
+import ru.yandex.practicum.model.film.Genre;
+import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.service.film.FilmService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/films")
 public class FilmController {
 
     private final FilmService filmService;
@@ -20,39 +21,61 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @GetMapping
+    @ResponseBody
+    @GetMapping("/films")
     public List<Film> allFilms() {
         return filmService.getAllFilms();
     }
 
-    @GetMapping("/{id}")
+    @ResponseBody
+    @GetMapping("/films/{id}")
     public Film getFilm(@PathVariable int id) {
         return filmService.getFilm(id);
     }
 
-    @PostMapping
+    @PostMapping("/films")
     public Film addFilm(@RequestBody Film film) {
         return filmService.saveFilm(film);
     }
 
-    @PutMapping
+    @PutMapping("/films")
     public Film updateFilm(@RequestBody Film film) throws ValidationException, NoSuchFilmException {
         return filmService.updateFilm(film);
     }
 
-    @PutMapping("/{id}/like/{userId}")
+    @PutMapping("films/{id}/like/{userId}")
     public List<Long> likeFilm(@PathVariable("id") int id, @PathVariable("userId") int userId) {
         return filmService.likeFilm(id, userId);
     }
 
-    @DeleteMapping("/{id}/like/{userId}")
+    @DeleteMapping("films/{id}/like/{userId}")
     public void deleteLike(@PathVariable("id") int id, @PathVariable("userId") int userId) {
         filmService.deleteLike(id, userId);
     }
 
-    @GetMapping("/popular")
+    @GetMapping("films/popular")
     public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") Integer count) {
         return filmService.getPopularFilms(count);
+    }
+
+    @GetMapping("/mpa")
+    public List<Mpa> getAllMpa() {
+        return filmService.getAllMpa();
+    }
+
+    @GetMapping("/mpa/{id}")
+    public Mpa getMpaById(@PathVariable int id) {
+        return filmService.getMpa(id);
+    }
+
+    @GetMapping("/genres")
+    public List<Genre> getAllGenres() {
+        return filmService.getAllGenre();
+    }
+
+    @GetMapping("/genres/{id}")
+    public Genre getGenreById(@PathVariable int id) {
+        return filmService.getGenreById(id);
     }
 
     @ExceptionHandler
@@ -72,5 +95,4 @@ public class FilmController {
     public ErrorResponse handleNoSuchFilmException(final NoSuchUserException e) {
         return new ErrorResponse("Ошибка данных", e.getMessage());
     }
-
 }

@@ -1,7 +1,7 @@
 package ru.yandex.practicum.validation;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.model.User;
+import ru.yandex.practicum.model.user.User;
 
 import java.time.LocalDate;
 
@@ -17,7 +17,7 @@ public class UserValidation {
     }
 
     private boolean emailCheck(User user) {
-        return !user.getEmail().isEmpty() && user.getEmail().contains(String.valueOf("@"));
+        return !user.getEmail().isEmpty() && user.getEmail().contains("@");
     }
 
     private boolean loginCheck(User user) {

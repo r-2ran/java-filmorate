@@ -1,13 +1,14 @@
 package ru.yandex.practicum.user;
 
-import ru.yandex.practicum.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.model.user.User;
 import ru.yandex.practicum.validation.UserValidation;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserValidationTest {
     User user;
