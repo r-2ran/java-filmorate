@@ -81,7 +81,7 @@ public class UserService {
         if (userStorage.getUsersMap().containsKey(id)) {
             return userStorage.getUsersMap().get(id);
         } else {
-            throw new NoSuchUserException("нет такого пользователя");
+            throw new NoSuchUserException("нет такого пользователя " + userStorage.getUsersMap().get(id));
         }
     }
 

@@ -99,7 +99,7 @@ public class FilmService {
             return filmStorage.getAllFilmsMap().get(id);
         } else {
             log.warn("нет такого фильма " + getFilmById(id));
-            throw new NoSuchFilmException("нет такого фильма");
+            throw new NoSuchFilmException("нет такого фильма " + getFilmById(id));
         }
     }
 
@@ -111,7 +111,7 @@ public class FilmService {
         if (filmStorage.getAllFilmsMap().containsKey(filmId)) {
             return filmStorage.getAllFilmsMap().get(filmId);
         } else {
-            throw new NoSuchFilmException("нет такого фильма");
+            throw new NoSuchFilmException("нет такого фильма " + filmStorage.getAllFilmsMap().get(filmId));
         }
     }
 
@@ -132,7 +132,7 @@ public class FilmService {
             if (mpa.getId() == id) {
                 return mpa;
             } else {
-                throw new NoSuchFilmException("no such mpa");
+                throw new NoSuchFilmException("no such mpa " + mpa);
             }
         }
         return null;
@@ -147,7 +147,7 @@ public class FilmService {
             if (genre.getId() == id) {
                 return genre;
             } else {
-                throw new NoSuchFilmException("no such genre");
+                throw new NoSuchFilmException("no such genre " + genre);
             }
         }
         return null;
