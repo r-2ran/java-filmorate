@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Film {
     Integer duration;
     final HashSet<Long> likes = new HashSet<>();
     Mpa mpa;
-    HashSet<Genre> genres = new HashSet<>();
+    LinkedHashSet<Genre> genres = new LinkedHashSet<>();
 
     public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;

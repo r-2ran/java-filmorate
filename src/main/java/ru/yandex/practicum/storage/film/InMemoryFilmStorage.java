@@ -53,6 +53,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         } else {
             if (films.containsKey(film.getId())) {
                 films.put(film.getId(), film);
+              //  film.getGenres().clear();
                 setMpaName(film);
                 setGenresName(film);
                 log.debug("Успешное обновлении фильма");
