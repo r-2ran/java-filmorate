@@ -8,7 +8,7 @@ import ru.yandex.practicum.model.film.Mpa;
 import ru.yandex.practicum.validation.FilmValidation;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,7 +23,7 @@ public class FilmValidationTest {
         film = new Film(1, "name", "description",
                 LocalDate.of(2010, 1, 1), 120);
         film.setMpa(new Mpa(1, "P"));
-        film.setGenres(new HashSet<>(List.of(new Genre(1, "Комедия"))));
+        film.setGenres(new LinkedHashSet<>(List.of(new Genre(1, "Комедия"))));
     }
 
     @Test
