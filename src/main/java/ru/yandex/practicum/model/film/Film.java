@@ -22,8 +22,6 @@ public class Film {
     final HashSet<Long> likes = new HashSet<>();
     Mpa mpa;
     HashSet<Genre> genres;
-//    int mpaId = getMpaId();
-//    int genreId = getGenreId();
 
     public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;
@@ -33,14 +31,4 @@ public class Film {
         this.duration = duration;
     }
 
-//    public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration,
-//                int mpaId, int genreId) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.releaseDate = releaseDate;
-//        this.duration = duration;
-//        this.mpaId = mpaId;
-//        this.genreId = genreId;
-//    }
 }

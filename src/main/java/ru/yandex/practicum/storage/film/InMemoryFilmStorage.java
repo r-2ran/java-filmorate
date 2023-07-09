@@ -34,17 +34,13 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.warn("Ошибка валидации при добавлении фильма" + film);
             throw new ValidationException("Ошибка валидации при добавлении фильма");
         } else {
-            if (film.getMpa() != null) {
-                setMpaName(film);
-            }
-            if (film.getGenres() != null) {
-                setGenresName(film);
-            }
             film.setId(generatedId++);
             films.put(film.getId(), film);
+            setMpaName(film);
+            setGenresName(film);
             log.debug("Успешное добавление фильма");
         }
-        return film;
+        return films.get(film.getId());
     }
 
     @Override
@@ -54,17 +50,16 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Ошибка валидации при обновлении фильма");
         } else {
             if (films.containsKey(film.getId())) {
-                setGenresName(film);
-                setMpaName(film);
-                films.remove(film.getId());
                 films.put(film.getId(), film);
+                setMpaName(film);
+                setGenresName(film);
                 log.debug("Успешное обновлении фильма");
             } else {
                 log.warn("Невозможно обновлении, не существует фильма " + film);
                 throw new NoSuchFilmException("Нет такого фильма");
             }
         }
-        return film;
+        return films.get(film.getId());
     }
 
     @Override
