@@ -37,7 +37,9 @@ public class InMemoryFilmStorage implements FilmStorage {
             film.setId(generatedId++);
             films.put(film.getId(), film);
             setMpaName(film);
-            setGenresName(film);
+            if (film.getGenres() != null) {
+                setGenresName(film);
+            }
             log.debug("Успешное добавление фильма");
         }
         return films.get(film.getId());

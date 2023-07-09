@@ -21,7 +21,7 @@ public class Film {
     Integer duration;
     final HashSet<Long> likes = new HashSet<>();
     Mpa mpa;
-    HashSet<Genre> genres;
+    HashSet<Genre> genres = new HashSet<>();
 
     public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;

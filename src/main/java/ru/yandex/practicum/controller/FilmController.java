@@ -21,11 +21,13 @@ public class FilmController {
         this.filmService = filmService;
     }
 
+    @ResponseBody
     @GetMapping("/films")
     public List<Film> allFilms() {
         return filmService.getAllFilms();
     }
 
+    @ResponseBody
     @GetMapping("/films/{id}")
     public Film getFilm(@PathVariable int id) {
         return filmService.getFilm(id);
