@@ -14,8 +14,8 @@ import ru.yandex.practicum.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,12 +46,12 @@ class FilmorateAppTest {
         film1 = new Film(1, "123nam4", "description   1234",
                 LocalDate.of(2000, 1, 1), 120);
         film1.setMpa(new Mpa(1, "P"));
-        film1.setGenres(new HashSet<>(List.of(new Genre(1, "Комедия"))));
+        film1.setGenres(new LinkedHashSet<>(Set.of(new Genre(1, "Комедия"))));
 
         film2 = new Film(2, "name", "description",
                 LocalDate.of(2010, 1, 1), 120);
         film2.setMpa(new Mpa(1, "P"));
-        film2.setGenres(new HashSet<>(List.of(new Genre(1, "Комедия"))));
+        film2.setGenres(new LinkedHashSet<>(Set.of(new Genre(1, "Комедия"))));
     }
 
     @Test
